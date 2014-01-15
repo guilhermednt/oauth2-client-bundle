@@ -6,17 +6,23 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Donato\HttpBundle\Guzzle\Client;
+use Guzzle\Http\Client;
+use Donato\HttpBundle\Factory\ClientFactory;
 
 class OAuth2UserProvider implements UserProviderInterface
 {
     protected $serverVerifyUri;
     protected $validateSSL;
+    /**
+     * @var ClientFactory
+     */
+    protected $clientFactory;
 
-    public function __construct($oauth2_server)
+    public function __construct($oauth2_server, ClientFactory $clientFactory)
     {
         $this->serverVerifyUri = $oauth2_server['verify_uri'];
         $this->validateSSL = $oauth2_server['validate_ssl'];
+        $this->clientFactory = $clientFactory;
     }
 
     public function loadUserByUsername($username)
@@ -27,7 +33,7 @@ class OAuth2UserProvider implements UserProviderInterface
     public function loadUserByAccessToken($access_token)
     {
         // Verify Access Token and get details back
-        $client = new Client();
+        $client = $this->clientFactory->getClient();
         if ($this->validateSSL === false) {
             $client = new Client(null, array('ssl.certificate_authority' => FALSE));
         }

@@ -4,7 +4,8 @@ namespace OAuth2\ClientBundle\Security\Firewall;
 
 use Symfony\Component\Security\Http\Firewall\AbstractAuthenticationListener;
 use Symfony\Component\HttpFoundation\Request;
-use Donato\HttpBundle\Guzzle\Client;
+use Donato\HttpBundle\Factory\ClientFactory;
+use Guzzle\Http\Client;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use OAuth2\ClientBundle\Security\Authentication\Token\OAuth2Token;
 
@@ -17,12 +18,17 @@ class OAuth2AuthorizationCodeListener extends AbstractAuthenticationListener
     protected $redirectUri;
     protected $scope;
     protected $validateSSL;
+    /**
+     * @var ClientFactory
+     */
+    protected $clientFactory;
 
-    public function setServer(array $oauth2_server)
+    public function setServer(array $oauth2_server, ClientFactory $clientFactory)
     {
         $this->serverAuthorizeUri = $oauth2_server['authorize_uri'];
         $this->serverTokenUri = $oauth2_server['token_uri'];
         $this->validateSSL = $oauth2_server['validate_ssl'];
+        $this->clientFactory = $clientFactory;
     }
     
     public function setClient(array $oauth2_client)
@@ -55,7 +61,7 @@ class OAuth2AuthorizationCodeListener extends AbstractAuthenticationListener
                 // Swap authorization code for access token
                 $tokenData = array();
 
-                $client = new Client();
+                $client = $this->clientFactory->getClient();
                 if ($this->validateSSL === false) {
                     $client = new Client(null, array('ssl.certificate_authority' => FALSE));
                 }
@@ -70,8 +76,8 @@ class OAuth2AuthorizationCodeListener extends AbstractAuthenticationListener
                         'redirect_uri' => $this->redirectUri,
                     ),
                     array(
-                        'timeout' => 2,
-                        'connect_timeout' => 2,
+                        'timeout' => 3,
+                        'connect_timeout' => 3,
                     )
                 );
 
