@@ -4,7 +4,7 @@ namespace OAuth2\ClientBundle\Security\Firewall;
 
 use Symfony\Component\Security\Http\Firewall\AbstractAuthenticationListener;
 use Symfony\Component\HttpFoundation\Request;
-use Guzzle\Http\Client;
+use Donato\HttpBundle\Guzzle\Client;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use OAuth2\ClientBundle\Security\Authentication\Token\OAuth2Token;
 
