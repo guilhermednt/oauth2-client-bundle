@@ -33,7 +33,7 @@ class OAuth2UserProvider implements UserProviderInterface
     public function loadUserByAccessToken($access_token)
     {
         // Verify Access Token and get details back
-        $client = $this->clientFactory->getClient();
+        $client = $this->clientFactory->getGuzzleClient();
         if ($this->validateSSL === false) {
             $client = new Client(null, array('ssl.certificate_authority' => FALSE));
         }

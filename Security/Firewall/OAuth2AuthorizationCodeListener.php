@@ -61,7 +61,7 @@ class OAuth2AuthorizationCodeListener extends AbstractAuthenticationListener
                 // Swap authorization code for access token
                 $tokenData = array();
 
-                $client = $this->clientFactory->getClient();
+                $client = $this->clientFactory->getGuzzleClient();
                 if ($this->validateSSL === false) {
                     $client = new Client(null, array('ssl.certificate_authority' => FALSE));
                 }
