@@ -42,7 +42,7 @@ class OAuth2UserProvider implements UserProviderInterface
         $queryString->set('access_token', $access_token);
         
         $request = $client->get(
-            $this->serverVerifyUri,
+            $this->serverVerifyUri . "?$queryString",
             array(),
             array(
                 'timeout' => 2,
