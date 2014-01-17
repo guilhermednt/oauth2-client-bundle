@@ -35,7 +35,7 @@ class OAuth2UserProvider implements UserProviderInterface
         // Verify Access Token and get details back
         $client = $this->clientFactory->getGuzzleClient();
         if ($this->validateSSL === false) {
-            $client = new Client(null, array('ssl.certificate_authority' => FALSE));
+            $client = $this->clientFactory->getGuzzleClient(null, array('ssl.certificate_authority' => FALSE));
         }
         
         $queryString = new \Guzzle\Http\QueryString();

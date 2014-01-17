@@ -63,7 +63,7 @@ class OAuth2AuthorizationCodeListener extends AbstractAuthenticationListener
 
                 $client = $this->clientFactory->getGuzzleClient();
                 if ($this->validateSSL === false) {
-                    $client = new Client(null, array('ssl.certificate_authority' => FALSE));
+                    $client = $this->clientFactory->getGuzzleClient(null, array('ssl.certificate_authority' => FALSE));
                 }
                 $api_request = $client->post(
                     $this->serverTokenUri,
