@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Guzzle\Http\Client;
-use Donato\HttpBundle\Factory\ClientFactory;
+use Donato\HttpServiceBundle\Factory\ClientFactory;
 
 class OAuth2UserProvider implements UserProviderInterface
 {
@@ -37,10 +37,10 @@ class OAuth2UserProvider implements UserProviderInterface
         if ($this->validateSSL === false) {
             $client = $this->clientFactory->getGuzzleClient(null, array('ssl.certificate_authority' => FALSE));
         }
-        
+
         $queryString = new \Guzzle\Http\QueryString();
         $queryString->set('access_token', $access_token);
-        
+
         $request = $client->get(
             $this->serverVerifyUri . "?$queryString",
             array(),
