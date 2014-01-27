@@ -4,7 +4,7 @@ namespace OAuth2\ClientBundle\Security\Firewall;
 
 use Symfony\Component\Security\Http\Firewall\AbstractAuthenticationListener;
 use Symfony\Component\HttpFoundation\Request;
-use Donato\HttpBundle\Factory\ClientFactory;
+use Donato\HttpServiceBundle\Factory\ClientFactory;
 use Guzzle\Http\Client;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use OAuth2\ClientBundle\Security\Authentication\Token\OAuth2Token;
@@ -30,7 +30,7 @@ class OAuth2AuthorizationCodeListener extends AbstractAuthenticationListener
         $this->validateSSL = $oauth2_server['validate_ssl'];
         $this->clientFactory = $clientFactory;
     }
-    
+
     public function setClient(array $oauth2_client)
     {
         $this->clientId = $oauth2_client['client_id'];
